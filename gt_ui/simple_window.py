@@ -4,10 +4,26 @@ __author__ = 'rgriffin'
 Helper module for creating PySide UI
 """
 
-from Qt import QtWidgets, QtGui, QtCore
-import maya.OpenMayaUI as omui
-
 import os
+import logging
+
+# Qt is a project by Marcus Ottosson ---> https://github.com/mottosso/Qt.py
+from Qt import QtGui, QtWidgets, QtCore, QtCompat
+
+try:
+    import pysideuic
+    from shiboken import wrapInstance
+
+    logging.Logger.manager.loggerDict["pysideuic.uiparser"].setLevel(logging.CRITICAL)
+    logging.Logger.manager.loggerDict["pysideuic.properties"].setLevel(logging.CRITICAL)
+except ImportError:
+    import pyside2uic as pysideuic
+    from shiboken2 import wrapInstance
+
+    logging.Logger.manager.loggerDict["pyside2uic.uiparser"].setLevel(logging.CRITICAL)
+    logging.Logger.manager.loggerDict["pyside2uic.properties"].setLevel(logging.CRITICAL)
+
+import maya.OpenMayaUI as omui
 import maya.cmds as cmds
 
 def maya_main_window():
