@@ -12,7 +12,7 @@ reload(utils)
 
 CLASSNAME = 'Rig_Leg'
 TITLE = 'Leg'
-DATAPATH = os.environ["RDOJO_DATA"] + '/rig/leg.json'
+DATAPATH = os.environ["DATA_PATH"] + '/leg.json'
 
 class Rig_Leg(rig_hinge.Rig_Hinge):
     def __init__(self, uiinfo, *args):

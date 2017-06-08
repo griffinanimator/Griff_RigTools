@@ -102,3 +102,27 @@ def findHighestTrailingNumber(names, basename):
         else:
             highestValue = 1
     return highestValue
+
+
+
+def swapNurbsCurveShape():
+    if len(ls(sl=True)) == 2:
+        s = ls(sl=True)
+        tgtshp = s[1].getShape()
+        delete(tgtshp)
+
+        srcshp = s[0].getShape()
+        sppos = srcshp.getCVs(space='world')
+        parent(srcshp, s[1], s=True, r=True)
+        srcshp.setCVs(sppos, space='world')
+        rename(srcshp, tgtshp)
+        # delete(s)
+        print
+        "Done"
+    else:
+        return
+
+
+#swapNurbsCurveShape()
+
+

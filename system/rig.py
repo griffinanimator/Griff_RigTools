@@ -1,4 +1,5 @@
 import maya.cmds as cmds
+from pymel.core import *
 import json
 import os
 import system.utils as utils
@@ -8,9 +9,9 @@ class Rig():
     def __init__(self, uiinfo, numjnts):
         self.uiinfo = uiinfo
         self.numjnts = numjnts
-        self.datapath = uiinfo['datapath']
+        self.datapath = uiinfo['data_path']
         self.modFile = uiinfo['modfile']
-        self.moduleInstance = uiinfo['moduleClass']
+        self.moduleInstance = uiinfo['modclass']
 
         # Dictionary to store rig specific data
         # rig_info stores all data needed to build the rig.
@@ -64,6 +65,8 @@ class Rig():
 
         self.module_info['instance'] = self.uiinfo['side'] + self.module_info['partnum'] + '_'
 
+        self.module_info['udname'] = self.module_info['rootname'] + self.module_info['instance']
+
         # Create a master asset
         if cmds.objExists(self.module_info['rootname'] + self.module_info['instance'] + 'ASSET') == True:
             # NOTE:  This would be a good place to further check for asset contents
@@ -83,7 +86,7 @@ class Rig():
         self.addAssetAttrs()
 
     def addAssetAttrs(self):
-        attrlist = (['modclass', self.moduleInstance],
+        attrlist = (['modclass', self.module_info['modclass']],
                     ['partnum', self.module_info['partnum']],
                     ['rootname',self.module_info['rootname']],
                     ['instance', self.module_info['instance']],
@@ -138,6 +141,8 @@ class Rig():
                 if cmds.nodeType(item) == 'joint' and item.endswith('lyt_JNT') == True:
                     pos = cmds.xform(item, q=True, ws=True, t=True)
                     self.rig_info.setdefault('positions', []).append(pos)
+                    rot = cmds.xform(item, q=True, ws=True, ro=True)
+                    self.rig_info.setdefault('rotations', []).append(rot)
 
             self.rig_info['instance'] = cmds.getAttr(self.rig_info['mainasset'] + '.instance')
 
@@ -151,9 +156,11 @@ class Rig():
         """
 
         sel = cmds.ls(sl=True)
+
         if sel:
             # Navigate up to see if the selection is an asset or a child of one.
             parentcon = cmds.container(q=True, fc=sel[0])
+            print parentcon
             if parentcon:
                 # Look for the main asset
                 maincon = cmds.container(q=True, fc=parentcon)
@@ -180,31 +187,39 @@ class Rig():
             else:
                 raise RuntimeError('No Valid Layout Found.')
 
+            print self.rig_info
 
-    def createJoint( self, name, position, instance, *args):
+
+    def createJoint( self, name, position, rotation, instance, *args):
         # Use a list comprehension to build joints.
-        jnt_list = [cmds.joint(n=name[i].replace('_s_', instance), p=position[i]) for i in range(len(name)-1)]
+        jnt_list = []
         cmds.select(d=True)
+        for i in range(len(name)-1):
+            j = cmds.joint(n=name[i].replace('_s_', instance))
+            xform(j, ws=True, ro=rotation[i])
+            xform(j, ws=True, t=position[i])
+            makeIdentity(j, apply=True)
+            jnt_list.append(j)
+
         return (jnt_list)
 
     def createControl(self, ctrlinfo):
-        control_info = []
-        for info in ctrlinfo:
-            # Create ik control
-            # Get ws position of the joint
-            pos = info[0]
-            # Create circle control object
-            ctrl_file = os.environ["RDOJO_DATA"] + 'controls/' + info[2]
-            # Import a control object
-            cmds.file(ctrl_file, i=True)
-            ctrl = info[1]
-            ctrlgrp = 'grp_' + info[1]
-            if cmds.objExists('grp_control') == True:
-                cmds.rename('grp_control', ctrlgrp)
-                cmds.rename('control', ctrl)
-            # Move the group to the joint
-            cmds.xform(ctrlgrp, t=pos, ws=True)
-            control_info.append([ctrlgrp, ctrl])
+
+        # Create ik control
+        # Get ws position of the joint
+        pos = ctrlinfo[0]
+        # Create circle control object
+        ctrl_file = os.environ["DATA_PATH"] + '/controls/' + ctrlinfo[2]
+        # Import a control object
+        cmds.file(ctrl_file, i=True)
+        ctrl = ctrlinfo[1]
+        ctrlgrp = ctrlinfo[1]+'_grp'
+        if cmds.objExists('grp_control') == True:
+            cmds.rename('grp_control', ctrlgrp)
+            cmds.rename('control', ctrl)
+        # Move the group to the joint
+        cmds.xform(ctrlgrp, m=pos, ws=True)
+        control_info = [ctrlgrp, ctrl]
         return (control_info)
 
     def connectThroughBC(self, parentsA, parentsB, children, switchattr, instance, *args):
@@ -214,10 +229,10 @@ class Rig():
             bcNodeT = cmds.shadingNode("blendColors", asUtility=True, n='bcNodeT_switch_' + self.rig_info['instance'] + switchPrefix)
             if switchattr:
                 cmds.connectAttr(switchattr, bcNodeT + '.blender')
-            bcNodeR = cmds.shadingNode("blendColors", asUtility=True, n='bcNodeR_switch_' + switchPrefix)
+            bcNodeR = cmds.shadingNode("blendColors", asUtility=True, n='bcNodeR_switch_' + self.rig_info['instance'] + switchPrefix)
             if switchattr:
                 cmds.connectAttr(switchattr, bcNodeR + '.blender')
-            bcNodeS = cmds.shadingNode("blendColors", asUtility=True, n='bcNodeS_switch_' + switchPrefix)
+            bcNodeS = cmds.shadingNode("blendColors", asUtility=True, n='bcNodeS_switch_' + self.rig_info['instance'] + switchPrefix)
             if switchattr:
                 cmds.connectAttr(switchattr, bcNodeS + '.blender')
             constraints.append([bcNodeT, bcNodeR, bcNodeS])
@@ -234,6 +249,10 @@ class Rig():
             cmds.connectAttr(bcNodeR + '.output', children[j] + '.rotate')
             cmds.connectAttr(bcNodeS + '.output', children[j] + '.scale')
         return constraints
+
+    def queryCurrentXform(self, objlist):
+        self.rig_info['xform'] = [xform(x, q=True, ws=True, m=True) for x in objlist]
+        return self.rig_info['xform']
 
 
 
