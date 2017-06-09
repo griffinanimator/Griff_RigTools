@@ -17,7 +17,7 @@ DATAPATH = os.environ["DATA_PATH"] + '/arm.json'
 class Rig_Arm(rig_hinge.Rig_Hinge):
     def __init__(self, uiinfo, *args):
         print "Arm"
-        self.datapath = os.environ["RDOJO_DATA"] +  '/arm.json'
+        self.datapath = os.environ["DATA_PATH"] +  '/arm.json'
         self.numjnts = 4
         rig_hinge.Rig_Hinge.__init__(self, uiinfo, self.numjnts)
 
