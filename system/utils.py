@@ -103,8 +103,6 @@ def findHighestTrailingNumber(names, basename):
             highestValue = 1
     return highestValue
 
-
-
 def swapNurbsCurveShape():
     if len(ls(sl=True)) == 2:
         s = ls(sl=True)
@@ -121,6 +119,18 @@ def swapNurbsCurveShape():
         "Done"
     else:
         return
+
+def saveSelectedCurvesCVs(spc):
+    sel = ls(sl=True, type='transform')
+    curve_dict = {}
+
+    for s in sel:
+        curve_dict[s] = s.getCVs(space=spc)
+
+def getSelectedCurvesCVs(spc):
+    for key, value in curve_dict.iteritems():
+        key.setCVs(value, space=spc)
+
 
 
 #swapNurbsCurveShape()

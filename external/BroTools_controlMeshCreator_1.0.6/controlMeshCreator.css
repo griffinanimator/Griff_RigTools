@@ -1,0 +1,15 @@
+controlMeshCreatorWindow {
+    background-color:QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #363636, stop: 1 #303030);
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(60,60,60);
+}
+
+
+QPushButton:hover:!pressed
+{
+  background-color: rgb(40,40,40);
+  border-width: 1px;
+  border-style: solid;
+  border-color: #faa300;
+}

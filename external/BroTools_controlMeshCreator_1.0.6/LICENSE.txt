@@ -1,0 +1,57 @@
+===============================================================================
+
+Copyright (c) 2016, Mikhail Davydov
+All rights reserved.
+
+If you have any questions about this License Agreement, not sure about any of it's terms or if you wish to ask about getting the software under other special terms, feel free to contact me: nixesvfx@gmail.com
+
+BroTools Control Mesh Creator for Maya End User License Agreement (EULA)
+
+This is a legal agreement between you and Mikhail Davydov covering your use of BroTools for Maya and BroDynamics (the "Software").
+
+1) By purchasing Control Mesh Creator and\or BroTools (from here and on - The Software), you agree to not redistribute
+   these scripts, outside of your production environment.
+
+2) Tools can be used for personal and/or professional work for film, broadcast, advertising,
+   video games, and other forms of multi-media.
+
+3) The Software is owned by Mikhail Davydov and is protected by copyright laws
+   and international treaty provisions. Therefore, you must treat the Software like any other
+   copyrighted material.
+
+4) You may not distribute, rent, sub-license or otherwise make available to others the Software
+   or documentation or copies thereof, except as expressly permitted in this License without prior
+   written consent from Mikhail Davydov. In the case of an authorized transfer, the
+   transferee must agree to be bound by the terms and conditions of this License Agreement.
+
+5) You may not remove any proprietary notices, labels, trademarks on the Software or
+   documentation.
+
+6) You are allowed to modify the software to best suit your production requirements withing your production environment. You are not allowed to redistribute, rent, sub-license or otherwise make available to others the modified Software or copies there of.
+
+7) You are allowed to give modified versions of the software to other people inside of your production environment, if they purchased the original version of it.
+
+8) Limited warranty: BroTools and BroDynamic tools and documentation are "as is" without any
+   warranty as to their performance, merchantability or fitness for any particular purpose.
+   The licensee assumes the entire risk as to the quality and performance of the software.
+   In no event shall Mikhail Davydov or anyone else who has been involved in the creation, development,
+   production, or delivery of this software be liable for any direct, incidental or consequential
+   damages, such as, but not limited to, loss of anticipated profits, benefits, use, or data resulting
+   from the use of this software, or arising out of any breach of warranty.
+
+9) Mikhail Davydov leaves the right after himself to change the terms of this License Agreement by a written consent of both sides.
+
+10) By Clicking Accept you agree to the terms of this license agreement.
+
+
+THIS SOFTWARE IS PROVIDED BY MIKHAIL DAVYDOV "AS IS" AND ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL MIKHAIL DAVYDOV
+BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED
+AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+===============================================================================

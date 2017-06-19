@@ -1,0 +1,36 @@
+Installation:
+
+1.	Place the contents of the archive into the Maya scripts folder. 
+	Default is: C:\Users\<UserName>\Documents\maya\<MayaVersion>\scripts
+
+2.	Open Maya, and use this Python code to run the UI:
+
+import controlMeshCreator
+controlMeshCreator.initUI()
+
+
+3. 	You can write it under Python tab of the script editor, select the whole text,
+	middle-mouse drag it onto the shelf to add a button.
+
+4.	Click the shelf button to run the script.
+
+Usage:
+1.	Select your skinned mesh and click "Set".
+2.	Select desired control object\objects and click Generate button.
+
+By default it will try to delete faces by distance. While this works good enough for face, it is a 
+better idea to manually delete unnecessary faces. To do this, do the following:
+
+1.	Select your skinned mesh and click "Set".
+2.	Uncheck Auto Select and Auto Delete checkboxes.
+3.	Select ONE control, and click Generate.
+4.	You will have the full character mesh now, selected and probably green. It's ok.
+5.	Press F8 to enter the edit mode. Switch to Face (Ctrl+RightClick on mesh - Face).
+6.	Select faces you want to be 'clickable' for this control. Press Ctrl+Shift+I to invert
+	the selection. 
+7.	Press Delete on your keyboard.
+
+Repeat the process for each control. 
+
+
+For more help - roll over parts of the UI and watch Maya's help field (usually at the bottom)
