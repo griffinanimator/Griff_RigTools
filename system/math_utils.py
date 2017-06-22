@@ -243,3 +243,48 @@ def findPoleVectorPosition(joints):
         arrowV *= 5
         finalV = arrowV + midV
         return [finalV.x, finalV.y, finalV.z]
+
+def nullCtrlTransform():
+    """
+    Creates a decompose matrix node and a group above the control to counter translation
+    :return:
+    """
+    from pymel.core import *
+
+    # Load the matrix nodes plugin
+    try:
+        loadPlugin('matrixNodes.mll')
+    except:
+        pass
+
+    # Get the selected control
+    sel = ls(sl=True)
+    if len(sel) == 2:
+        # create a decomposeMatrix node
+        dmnode = shadingNode('decomposeMatrix', n=sel[1] + '_xformNull', asUtility=True)
+        # create a pma node
+        pmanode = shadingNode('plusMinusAverage', n=sel[1] + '_nullAdd', asUtility=True)
+        # Make a group to connect dconNode
+        select(sel[1])
+        dcongrp = group(n=sel[1] + '_dconGrp')
+        connectAttr(sel[1] + '.inverseMatrix', dmnode + '.inputMatrix')
+        connectAttr(dmnode + '.outputTranslate', pmanode + '.input3D[0]')
+        connectAttr(pmanode + '.output3D', dcongrp + '.translate')
+        # is the control in an asset?
+        con = container(q=True, fc=sel[1])
+
+        # create a decomposeMatrix node
+        dmnodeB = shadingNode('decomposeMatrix', n=sel[0] + '_xformNull', asUtility=True)
+        # create a pma node
+        pmanodeB = shadingNode('plusMinusAverage', n=sel[0] + '_nullSub', asUtility=True)
+        connectAttr(sel[0] + '.worldMatrix', dmnodeB + '.inputMatrix')
+        connectAttr(dmnodeB + '.outputTranslate', pmanodeB + '.input3D[0]')
+        connectAttr(pmanodeB + '.output3D', pmanode + '.input3D[1]')
+        pmaval = getAttr(pmanodeB + '.input3D[0]')
+        setattr(pmanodeB + '.input3D[1]', pmaval)
+        if con:
+            container(con, edit=True, an=dcongrp, ihb=True)
+            container(con, edit=True, an=dmnode, ihb=True)
+            container(con, edit=True, an=pmanode, ihb=True)
+            container(con, edit=True, an=pmanodeB, ihb=True)
+            container(con, edit=True, an=dmnodeB, ihb=True)

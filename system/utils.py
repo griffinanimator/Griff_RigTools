@@ -131,7 +131,20 @@ def getSelectedCurvesCVs(spc):
     for key, value in curve_dict.iteritems():
         key.setCVs(value, space=spc)
 
+def combineFingerValues(attr):
+    print attr
+    if attr == 'ctrl_L_fingers.Thumb_Curl':
+        a_prod = getAttr(attr) + getattr('Thumb_L_01_RIG.Thumb_rx_mult_0')
+        b_prod = getAttr(attr) + getattr('Thumb_L_01_RIG.Thumb_rx_mult_1')
+        c_prod = getAttr(attr) + getattr('Thumb_L_01_RIG.Thumb_rx_mult_2')
 
+        setAttr('ctrl_L_01_Thumb.rx', a_prod)
+        setAttr('ctrl_L_01_ThumbB.rx', b_prod)
+        setAttr('ctrl_L_01_ThumbC.rx', c_prod)
+
+from pymel.core import *
+from functools import partial
+scriptJob(ac=['ctrl_L_fingers.Thumb_Curl', "combineFingerValues('ctrl_L_fingers.Thumb_Curl')"], protected=True)
 
 #swapNurbsCurveShape()
 
